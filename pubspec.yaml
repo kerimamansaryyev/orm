@@ -1,6 +1,6 @@
 name: orm
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.0.2
 homepage:
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sembast: ^3.0.4 
+  sembast: ^3.0.4
   path_provider: ^2.0.4
 
 dev_dependencies:
