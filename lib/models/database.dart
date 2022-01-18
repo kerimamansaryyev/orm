@@ -61,7 +61,10 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
   Future<List<T>> read(
       {int? offset, int? limit, Filter? filter, bool getAll = false}) async {
     var store = _getTable;
-    var finder = Finder(offset: offset, limit: limit, filter: filter);
+    var finder = Finder(
+        offset: getAll ? null : offset,
+        limit: getAll ? null : limit,
+        filter: filter);
 
     var list = await store.find(_database, finder: getAll ? null : finder);
     return list
