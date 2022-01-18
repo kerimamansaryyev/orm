@@ -66,7 +66,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
         limit: getAll ? null : limit,
         filter: filter);
 
-    var list = await store.find(_database, finder: getAll ? null : finder);
+    var list = await store.find(_database, finder: finder);
     return list
         .map<T>((item) => constructorDelegate(cloneMap(item.value)))
         .toList();
