@@ -43,6 +43,13 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
     });
   }
 
+  Future<void> deleteWhere({Filter? filter}) {
+    var store = _getTable;
+    return _makeTransaction((trans) async {
+      await store.delete(trans, finder: Finder(filter: filter));
+    });
+  }
+
   @override
   Future<void> delete(List<T> records) {
     var store = _getTable;
