@@ -111,6 +111,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
 
   static Future<void> init() async {
     await _database?.close();
-    _database ??= await _launch();
+    _database = null;
+    _database = await _launch();
   }
 }
