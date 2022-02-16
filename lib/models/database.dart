@@ -73,7 +73,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
         limit: getAll ? null : limit,
         filter: filter);
 
-    var list = await store.find(_database, finder: finder);
+    var list = await store.find(_database!, finder: finder);
     return list
         .map<T>((item) => constructorDelegate(cloneMap(item.value)))
         .toList();
@@ -82,7 +82,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
   @override
   Future<T?> getByKey<PKeyType>(String fieldName, PKeyType key) async {
     var store = _getTable;
-    var item = await store.findFirst(_database,
+    var item = await store.findFirst(_database!,
         finder: Finder(filter: Filter.equals(fieldName, key)));
     return item == null ? null : constructorDelegate(cloneMap(item.value));
   }
@@ -90,14 +90,14 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
   @override
   Future<void> clear() {
     var store = _getTable;
-    return store.delete(_database);
+    return store.delete(_database!);
   }
 
   static Future<String> get _localPath async =>
       (await getApplicationDocumentsDirectory()).path;
 
   static Future<void> _makeTransaction(TransactionDelegate action) async {
-    await _database.transaction(action);
+    await _database!.transaction(action);
   }
 
   static Future<Database> _launch() async {
@@ -107,9 +107,10 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
     return postFactory.openDatabase('$path/$nameOfDataBase');
   }
 
-  static late final Database _database;
+  static Database? _database;
 
   static Future<void> init() async {
-    _database = await _launch();
+    await _database?.close();
+    _database ??= await _launch();
   }
 }
