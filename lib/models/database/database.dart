@@ -1,10 +1,11 @@
 import 'package:orm/models/dao.dart';
 import 'package:orm/orm.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:sembast/utils/value_utils.dart';
+import 'stub.dart'
+    if (dart.library.io) 'mobile.dart'
+    if (dart.library.html) 'web.dart';
 
 const kCreatedTimeStampField = 'created_at';
 
@@ -93,8 +94,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
     return store.delete(_database!);
   }
 
-  static Future<String> get _localPath async =>
-      (await getApplicationDocumentsDirectory()).path;
+  static Future<String> get _localPath => getAppDbPath();
 
   static Future<void> _makeTransaction(TransactionDelegate action) async {
     await _database!.transaction(action);
@@ -103,7 +103,7 @@ class OrmDataBase<T extends Orm> implements OrmDao<T> {
   static Future<Database> _launch() async {
     String nameOfDataBase = 'ormDb';
     String path = await _localPath;
-    DatabaseFactory postFactory = databaseFactoryIo;
+    DatabaseFactory postFactory = appDataBaseFactory();
     return postFactory.openDatabase('$path/$nameOfDataBase');
   }
 

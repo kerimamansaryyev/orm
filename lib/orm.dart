@@ -1,8 +1,8 @@
 library orm;
 
 import 'package:sembast/timestamp.dart';
-import 'package:orm/models/database.dart';
-export 'package:orm/models/database.dart' hide kCreatedTimeStampField;
+import 'package:orm/models/database/database.dart';
+export 'package:orm/models/database/database.dart' hide kCreatedTimeStampField;
 export 'package:sembast/sembast.dart' show Filter;
 
 abstract class Orm<PKeyType> {
